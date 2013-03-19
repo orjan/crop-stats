@@ -1,0 +1,29 @@
+﻿<h1>Grödor för 2012</h1>
+<div ng-app="cropsApp" ng-controller="cropList">
+
+    <form ng-submit="addTodo()">
+        <input type="text" ng-model="cropType" size="30"
+            placeholder="add new todo here">
+        <input class="btn-primary" type="submit" value="add">
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Gröda</th>
+            </tr>
+        </thead>
+        <tbody  class="{{apa}}">
+            <tr ng-repeat="crop in cropList">
+                <td>{{crop}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+@section scripts
+{
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.3/angular.min.js"></script>
+    <script src="/Scripts/app/crops.js"></script>
+}
