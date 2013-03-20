@@ -1,21 +1,49 @@
 ﻿<h1>Grödor för 2012</h1>
 <div ng-app="cropsApp" ng-controller="cropList">
 
-    <form ng-submit="addTodo()">
-        <input type="text" ng-model="cropType" size="30"
-            placeholder="add new todo here">
-        <input class="btn-primary" type="submit" value="add">
+    <form ng-submit="addTodo()" class="well">
+        <fieldset>
+            <legend>Lägg till gröda</legend>
+            <label for="cropType">Gröda</label>
+            <select id="cropType" ng-model="crop.cropType" ng-options="i.Id as i.Name for i in items"></select>
+
+            <label for="area">Area</label>
+            <input type="text" ng-model="crop.area" id="area" name="area" />
+
+            <label for="output">Avkastning</label>
+            <input type="text" ng-model="crop.output" id="output" name="output" />
+
+            <label class="checkbox">
+                <input type="checkbox" ng-model="crop.isCalculated" name="isCalculated" id="isCalculated" />
+                Uppskattad?
+            </label>
+        </fieldset>
+        <div class="btn-toolbar">
+            <button class="btn btn-primary" type="submit">Lägg till</button>
+        </div>
     </form>
 
-    <table>
+    <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Gröda</th>
+                <th>Typ</th>
+                <th>Area</th>
+                <th>Avkastning</th>
+                <th>Beräknad</th>
+                <th></th>
             </tr>
         </thead>
-        <tbody  class="{{apa}}">
-            <tr ng-repeat="crop in cropList">
-                <td>{{crop}}</td>
+        <tbody>
+            <tr ng-repeat="c in cropList">
+                <td>{{c.cropType}}</td>                
+                <td>{{c.area}}</td>
+                <td>{{c.output}}</td>
+                <td>{{c.isCalculated}}</td>
+                <td>
+                    <button class="btn btn-info" ng-click="editRow($index)">Ändra</button>
+                    <button class="btn btn-danger" ng-click="removeCrop($index)">Radera</button>
+
+                </td>
             </tr>
         </tbody>
     </table>
