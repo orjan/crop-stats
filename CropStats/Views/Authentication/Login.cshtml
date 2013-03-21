@@ -1,0 +1,10 @@
+﻿@model CropStats.Controllers.AuthenticationLogin
+
+@using (Html.BeginForm())
+{
+    @Html.LabelFor(m => m.CustomerNumber)
+    @Html.TextBoxFor(m => m.CustomerNumber)
+
+    @Html.LabelFor(m => m.ActivationCode)
+    @Html.PasswordFor(m => m.ActivationCode)
+}
