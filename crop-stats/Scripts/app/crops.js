@@ -47,7 +47,9 @@ cropsApp.controller('cropList', function ($scope, storage, $http) {
     };
 
     $scope.editRow = function (id) {
-        $scope.crop = $scope.cropList[id];
+        var crop = $scope.cropList[id];
+        console.log(crop);
+        $scope.crop = crop;
     };
     
     $scope.removeCrop = function (id) {
