@@ -1,8 +1,9 @@
 using System.Web.Optimization;
+using CropStats.App_Start;
 
-[assembly: WebActivatorEx.PostApplicationStartMethod(typeof(crop_stats.App_Start.BootstrapBundleConfig), "RegisterBundles")]
+[assembly: WebActivatorEx.PostApplicationStartMethod(typeof(BootstrapBundleConfig), "RegisterBundles")]
 
-namespace crop_stats.App_Start
+namespace CropStats.App_Start
 {
 	public class BootstrapBundleConfig
 	{

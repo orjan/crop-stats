@@ -1,7 +1,6 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
-namespace crop_stats
+namespace CropStats.App_Start
 {
     public class BundleConfig
     {
