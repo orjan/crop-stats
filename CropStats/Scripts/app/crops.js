@@ -1,49 +1,57 @@
-﻿// declare a module
-var cropsApp = angular.module('cropsApp', []);
+﻿var cropsApp = angular.module('cropsApp', ["cropService"]);
 
-// configure the module.
-// in this example we will create a greeting filter
-cropsApp.filter('greet', function () {
-    return function (name) {
-        return 'Hello, ' + name + '!';
-    };
+var api = angular.module("cropService", ["ngResource"]);
+api.factory("Crop", function ($resource) {
+    return $resource(
+        "/api/crops/:Id",
+        {Id: "@Id" },
+        { "update": { method: "PUT" } }
+   );
+});
+api.factory("CropType", function ($resource) {
+    return $resource(
+        "/api/croptype/:Id",
+        {Id: "@Id" },
+        { "update": { method: "PUT" } }
+   );
 });
 
-cropsApp.factory('storage', function() {
-    return {
-        save: function(list) {
-            var stringify = JSON.stringify(list);
-            localStorage.setItem("crops", stringify);
-        },
-        load: function () {
-            var item = localStorage.getItem("crops");
-            return JSON.parse(item);
+cropsApp.filter('viewestimated', function () {
+    return function (estimated) {
+        if (estimated) {
+            return "Uppskattad skörd";
+
+        } else {
+            return "Avräknad skörd";
         }
+    }
+});
+
+cropsApp.filter('viewcrop', function () {
+    return function (parameters) {
+        return this.items.filter(function(x) {
+            return x.Id == parameters;
+        })[0].Name;
     };
 });
 
-cropsApp.controller('cropList', function ($scope, storage, $http) {
-    var initCrop = function() {
-        return {
-            area: "",
-            type: "",
-            output: "",
-            isCalculated: false,
-        };
-    };
 
-    $scope.cropList = storage.load() || [];
-    $scope.crop = initCrop();
-    $http.get("/api/croptype").success(function (data, status) {
-        $scope.items = data;
-    });
-
-    $scope.addTodo = function () {
-        var copy = angular.copy($scope.crop);
-        $scope.cropList.push(copy);
-        storage.save($scope.cropList);
-        
-        $scope.crop = initCrop();
+cropsApp.controller('cropList', function ($scope, Crop, CropType) {
+    $scope.crop = new Crop();
+    $scope.cropList = Crop.query();
+    $scope.items = CropType.query();
+    
+    $scope.saveCrop = function () {
+        console.log(this.crop);
+        if (!this.crop.Id) {
+            this.crop.$save();
+            $scope.cropList.push(this.crop);
+            this.crop = new Crop();
+            
+        } else {
+            this.crop.$save();
+            this.crop = new Crop();
+        }
     };
 
     $scope.editRow = function (id) {
@@ -51,11 +59,12 @@ cropsApp.controller('cropList', function ($scope, storage, $http) {
         console.log(crop);
         $scope.crop = crop;
     };
-    
+
     $scope.removeCrop = function (id) {
         var crop = $scope.cropList[id];
         $scope.cropList.splice(crop, 1);
-        storage.save($scope.cropList);
+        crop.$remove();
+        this.crop = new Crop();
     };
 
 });

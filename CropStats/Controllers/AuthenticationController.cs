@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -18,16 +19,10 @@ namespace CropStats.Controllers
             passwordBuilder = new PasswordBuilder();
         }
 
-        [ChildActionOnly]
-        public ActionResult Login()
-        {
-            return PartialView(new AuthenticationLogin());
-        }
-
         [HttpPost]
         public ActionResult Login(AuthenticationLogin login)
         {
-            var farmer = DocumentSession.Load<Farmer>(login.CustomerNumber);
+            var farmer = DocumentSession.Query<Farmer>().SingleOrDefault(c=>c.CustomerNumber == login.CustomerNumber);
             if (farmer == null)
             {
                 throw new Exception("User doesn't exists");
@@ -57,7 +52,6 @@ namespace CropStats.Controllers
             string encTicket = FormsAuthentication.Encrypt(authTicket);
             HttpCookie faCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encTicket);
 
-            
             Response.Cookies.Add(faCookie);
 
             return RedirectToAction("Index", "Home");

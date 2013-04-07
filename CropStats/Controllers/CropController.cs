@@ -7,7 +7,13 @@ namespace CropStats.Controllers
         //
         // GET: /Crop/
 
+        [Authorize]
         public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ActionResult Overview()
         {
             return View();
         }

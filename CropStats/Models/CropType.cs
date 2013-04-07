@@ -1,4 +1,4 @@
-﻿namespace CropStats.Controllers
+namespace CropStats.Models
 {
     public class CropType
     {

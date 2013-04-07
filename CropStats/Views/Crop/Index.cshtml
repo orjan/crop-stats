@@ -1,25 +1,30 @@
 ﻿<h1>Grödor för 2012</h1>
 <div ng-app="cropsApp" ng-controller="cropList">
-
-    <form ng-submit="addTodo()" class="well">
+    <form ng-submit="saveCrop()" class="well" name="cropForm">
         <fieldset>
             <legend>Lägg till gröda</legend>
             <label for="cropType">Gröda</label>
-            <select id="cropType" ng-model="crop.cropType" ng-options="i.Id as i.Name for i in items"></select>
+            <input type="hidden" name="Id" ng-model="crop.Id" value="0" />
 
-            <label for="area">Area</label>
-            <input type="text" ng-model="crop.area" id="area" name="area" />
+            <select id="cropType" ng-model="crop.CropTypeId" ng-options="i.Id as i.Name for i in items" required></select>
 
-            <label for="output">Avkastning</label>
-            <input type="text" ng-model="crop.output" id="output" name="output" />
+            <label for="area">Areal (ha)</label>
+            <input type="number" ng-model="crop.Hectare" id="area" name="area" required />
 
-            <label class="checkbox">
-                <input type="checkbox" ng-model="crop.isCalculated" name="isCalculated" id="isCalculated" />
-                Uppskattad?
+            <label for="output">Avkastning (kg/ha)</label>
+            <input type="number" ng-model="crop.YieldPerHectare" id="output" name="output" required />
+
+            <label class="radio">
+                <input type="radio" ng-model="crop.Estimated" name="isCalculated" value="true" required ng-checked="crop.Estimated === true"/>
+                Uppskattad skörd
+            </label>
+            <label class="radio">
+                <input type="radio" ng-model="crop.Estimated" name="isCalculated" value="false" ng-checked="crop.Estimated === false" required />
+                Avräknad skörd
             </label>
         </fieldset>
         <div class="btn-toolbar">
-            <button class="btn btn-primary" type="submit">Lägg till</button>
+            <button class="btn btn-primary" type="submit" ng-disabled="cropForm.$invalid || cropForm.$pristine">Lägg till</button>
         </div>
     </form>
 
@@ -27,22 +32,22 @@
         <thead>
             <tr>
                 <th>Typ</th>
-                <th>Area</th>
-                <th>Avkastning</th>
+                <th>Areal </th>
+                <th>Skörd</th>
                 <th>Beräknad</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="c in cropList">
-                <td>{{c.cropType}}</td>                
-                <td>{{c.area}}</td>
-                <td>{{c.output}}</td>
-                <td>{{c.isCalculated}}</td>
+                <td>{{c.CropTypeId | viewcrop}}</td>
+                <td>{{c.Hectare}}</td>
+                <td>{{c.YieldPerHectare}}</td>
+                <td>{{c.Estimated | viewestimated}}</td>
+              
                 <td>
                     <button class="btn btn-info" ng-click="editRow($index)">Ändra</button>
                     <button class="btn btn-danger" ng-click="removeCrop($index)">Radera</button>
-
                 </td>
             </tr>
         </tbody>
@@ -52,6 +57,7 @@
 
 @section scripts
 {
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.3/angular.min.js"></script>
+    <script src="/Scripts/angular-1.1.4/angular.js"></script>
+    <script src="/Scripts/angular-1.1.4/angular-resource.js"></script>
     <script src="/Scripts/app/crops.js"></script>
 }

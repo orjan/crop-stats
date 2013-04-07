@@ -1,11 +1,23 @@
-﻿@model dynamic
+﻿@using CropStats.Controllers
+@model dynamic
 
 @{
     ViewBag.Title = "Statistik för grödor";
 }
 
-<h2>Statistik för grödor</h2>
+<h1>Statistik för växtråd</h1>
+<img src="http://www.vaxtrad.se/images/goldfish/middle-pic.jpg" />
+<br />
+<div class="hero-unit">
+    <h2>VäxtRåd - Odlingsdata för året som har gått!</h2>
+    <p>Vi på VäxtRåd ...</p>
+    <p>Varför ska jag rapportera in min skörd?</p>
+    <ul>
+        <li>Var med i en utlottning av?</li>
+        <li>Se hur er skörd står sig mot övriga landet</li>
+    </ul>
+</div>
 
-@Html.Action("Login", "Authentication")
-
-my little farmer: @User.Identity.Name
+<div class="well">
+    @Html.Partial("Login", new AuthenticationLogin())
+</div>
