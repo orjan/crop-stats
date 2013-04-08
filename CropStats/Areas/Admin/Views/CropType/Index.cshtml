@@ -1,0 +1,55 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "Grödor";
+}
+
+<h1>Grödor</h1>
+
+<div ng-app="cropsTypeApp" ng-controller="list">
+
+    <form ng-submit="save()" class="well form-horizontal" name="cropForm">
+        <fieldset>
+            <legend>Lägg till gröda</legend>
+            <input type="hidden" name="Id" ng-model="item.Id" value="0" />
+
+            <label for="name">Gröda</label>
+            <input type="text" ng-model="item.Name" name="name" id="name" required />
+            
+            <label for="subtype">Art</label>
+            <input type="text" ng-model="item.SubType" name="subtype" id="subtype" />
+        </fieldset>
+        <div class="btn-toolbar">
+            <button class="btn btn-primary" type="submit" ng-disabled="cropForm.$invalid || cropForm.$pristine">Lägg till</button>
+        </div>
+    </form>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Gröda</th>
+                <th>Art </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="c in items">
+                <td>{{c.Name}}</td>
+                <td>{{c.SubType}}</td>
+                <td>
+                    <button class="btn btn-info" ng-click="editRow($index)">Ändra</button>
+                    <button class="btn btn-danger" ng-click="removeCrop($index)">Radera</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+
+@section scripts
+{
+    <script src="/Scripts/angular-1.1.4/angular.js"></script>
+    <script src="/Scripts/angular-1.1.4/angular-resource.js"></script>
+    <script src="/Scripts/admin/croptype.js"></script>
+}

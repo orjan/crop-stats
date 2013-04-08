@@ -8,10 +8,24 @@ namespace CropStats.Controllers
 {
     public class CropTypeController : DocumentApiController
     {
-        // GET api/api
         public IEnumerable<CropType> Get()
         {
-            return DocumentSession.Query<CropType>();
+            return DocumentSession.Query<CropType>().OrderBy(x=>x.Name).OrderBy(x=>x.SubType);
+        }
+
+        public CropType Post(CropType crop)
+        {
+            DocumentSession.Store(crop);
+
+            return crop;
+        }
+
+        public HttpResponseMessage Delete(int id)
+        {
+            var crop = DocumentSession.Load<CropType>(id);
+            DocumentSession.Delete(crop);
+
+            return new HttpResponseMessage(HttpStatusCode.Accepted);
         }
     }
 
